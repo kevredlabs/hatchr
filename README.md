@@ -51,23 +51,6 @@ Built for the Solana X402 Hackathon. See rules and timeline: [Solana X402 Hackat
 - **Server**: Rust (e.g., Axum/Actix), MongoDB, x402 validation + link/payment services
 - **Blockchain**: Solana devnet; SOL payments; optional integration with a configurable x402 facilitator
 
-```
-Creator Wallet ──(connect)─────▶ Client (Vite/React)
-                                     │
-                                     │ REST/JSON
-                                     ▼
-                                Server (Rust)
-                             ┌─────────┴────────┐
-                             │  Links & Stats   │
-                             │  x402 Validation │
-                             └─────────┬────────┘
-                                       │
-                                MongoDB (data)
-                                       │
-                                       ▼
-                                Solana (devnet)
-```
-
 ---
 
 ## Data Model (MVP)
@@ -83,22 +66,6 @@ Creator Wallet ──(connect)─────▶ Client (Vite/React)
   "targetUrl": "string",
   "priceLamports": 123456789,      // price in lamports
   "feeBps": 300,                   // 3% platform fee
-  "createdAt": "ISO-8601",
-  "updatedAt": "ISO-8601"
-}
-```
-
-### Payment Event (for stats)
-
-```json
-{
-  "_id": "ObjectId",
-  "linkCode": "string",
-  "payerPubkey": "string",
-  "txSignature": "string",
-  "amountLamports": 123456,
-  "feeLamports": 3703,
-  "netLamports": 119753,
   "createdAt": "ISO-8601"
 }
 ```
@@ -107,7 +74,7 @@ Creator Wallet ──(connect)─────▶ Client (Vite/React)
 
 ## Private API (MVP)
 
-Base URL (dev): `http://localhost:8787` (server), `http://localhost:5173` (client)
+Base URL (dev): `http://localhost:4000` (server), `http://localhost:3000` (client)
 
 Note: The API is private during the MVP. It is intended to be consumed only by the Hatchr client. Endpoints and contracts may change without notice and are not meant for third-party integrations yet.
 
@@ -116,7 +83,7 @@ Note: The API is private during the MVP. It is intended to be consumed only by t
 POST `/api/links`
 
 ```bash
-curl -X POST http://localhost:8787/api/links \
+curl -X POST http://localhost:4000/api/links \
   -H "Content-Type: application/json" \
   -d '{
     "targetUrl": "https://example.com/my-course",
@@ -162,6 +129,7 @@ GET `/l/:code` → returns HTTP 402 x402 challenge when unpaid, then redirects u
 Server (`.env`):
 
 ```bash
+PORT=4000
 MONGODB_URI=mongodb://localhost:27017/hatchr
 SOLANA_CLUSTER=devnet
 X402_FACILITATOR_URL=https://facilitator.devnet.example.com
@@ -173,10 +141,16 @@ SESSION_SECRET=change_me
 Client (`.env`):
 
 ```bash
-VITE_BACKEND_URL=http://localhost:8787
+VITE_BACKEND_URL=http://localhost:4000
 VITE_SOLANA_CLUSTER=devnet
 VITE_X402_FACILITATOR_URL=https://facilitator.devnet.example.com
 ```
+
+#### Local Ports (dev)
+
+- Server API: `http://localhost:4000` (configure with `PORT`)
+- Client dev server: `http://localhost:3000` (run Vite with `--port 3000`)
+- MongoDB: `mongodb://localhost:27017`
 
 ---
 

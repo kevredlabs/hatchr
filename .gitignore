@@ -1,0 +1,47 @@
+# Node.js
+node_modules/
+client/node_modules/
+client/dist/
+dist/
+build/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Vite / Cache
+client/.vite/
+client/.cache/
+.vite/
+.cache/
+
+# TypeScript
+*.tsbuildinfo
+
+# Rust
+target/
+server/target/
+
+# Env files
+.env
+.env.*
+!.env.example
+!env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Coverage
+coverage/
+
+# Misc
+.vercel/
+.next/
+.out/
+
